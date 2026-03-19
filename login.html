@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annapoorna Connect | Login</title>
+    <link rel="stylesheet" href="css/style.css?v=9">
+    <link rel="stylesheet" href="css/login.css?v=9">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="login-page">
+    <div class="split-container">
+
+        <!-- Left Side: Login Form -->
+        <div class="login-side">
+            <!-- Go back link -->
+            <a href="index.html" class="back-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Back to Home
+            </a>
+
+            <div class="login-wrapper">
+                <div class="login-header">
+                    <h2 class="login-title">Annapoorna Connect <span class="divider-pipe">|</span> User Login</h2>
+                </div>
+
+                <form class="login-form">
+                    <div class="input-group">
+                        <span class="icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7"
+                                    stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <rect x="3" y="5" width="18" height="14" rx="2" stroke="#888" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <input type="email" placeholder="Email Address" required id="email-input">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect x="5" y="11" width="14" height="10" rx="2" stroke="#888" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="#888"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        <input type="password" placeholder="Password" required id="password-input">
+                        <span class="icon-right" id="toggle-password">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M17.94 17.94A10.07 10.07 0 0112 20C7.03 20 3 15.5 3 12c0-1.63.47-3.15 1.27-4.44M9.9 4.24A9.12 9.12 0 0112 4c4.97 0 9 4.5 9 8 0 1.25-.33 2.42-.88 3.44M15 12a3 3 0 01-3 3 3 3 0 01-2.12-.88M3 3l18 18"
+                                    stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                    </div>
+
+                    <div class="form-options">
+                        <a href="forgot-password.html" class="forgot-pwd">Forgot Password?</a>
+                    </div>
+
+                    <div class="error-msg" id="login-error" style="color: #d9534f; font-size: 13px; text-align: center; margin-bottom: 5px;"></div>
+
+                    <button type="button" class="login-btn-submit" id="login-btn">Login</button>
+
+                    <p class="signup-prompt">Don't have an account? <a href="signup.html">Sign Up</a></p>
+
+                    <div class="separator">
+                        <span>Or login with</span>
+                    </div>
+
+                    <div class="social-login">
+                        <button type="button" class="btn google">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                    fill="#4285F4" />
+                                <path
+                                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                    fill="#34A853" />
+                                <path
+                                    d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.84z"
+                                    fill="#FBBC05" />
+                                <path
+                                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                                    fill="#EA4335" />
+                            </svg>
+                            Google
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Side: Background Photo Overlay -->
+        <div class="image-side">
+            <div class="img-bg"></div>
+
+            <div class="image-top-logo">
+                <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="white-logo">
+                    <path d="M20 70 Q 50 85 70 70 A 10 10 0 0 1 70 80 Q 40 95 10 80 Z" fill="#fff" />
+                    <path d="M30 65 Q 50 75 60 65" stroke="#fff" stroke-width="4" fill="none" />
+                    <path d="M30 40 Q 50 55 70 40 Z" fill="#e8a860" />
+                    <circle cx="50" cy="35" r="5" fill="#e8a860" />
+                    <path d="M75 50 Q 90 40 85 20 A 15 15 0 0 0 65 25 Q 70 45 75 50 Z" fill="#fff" />
+                </svg>
+                <span>ANNAPOORNA CONNECT | BRIDGING HUNGER WITH COMPASSION</span>
+            </div>
+
+            <div class="image-center-text">
+                <h2>Your login connects food with hearts.<br>Continue your mission.</h2>
+            </div>
+
+            <div class="image-bottom-links">
+                <p>© 2026 Annapoorna Connect | A Global Compassion Initiative</p>
+                <div class="footer-links">
+                    <a href="#">ABOUT US</a> |
+                    <a href="#">IMPACT STORIES</a> |
+                    <a href="#">CONTACT</a> |
+                    <a href="#">LEGAL</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP for smooth entrance -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+            // Fade in right side image and text
+            tl.from(".img-bg", { opacity: 0, duration: 1.2 })
+                .from(".image-center-text h2", { y: -30, opacity: 0, duration: 0.8 }, "-=0.6")
+                .from(".image-top-logo", { y: -20, opacity: 0, duration: 0.6 }, "-=0.4")
+                .from(".image-bottom-links", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4");
+
+            // Slide in left login form elements
+            tl.from(".login-side", { x: -50, opacity: 0, duration: 0.8 }, "-=1.0")
+                .from(".login-title", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4")
+                .from(".input-group", { y: 20, opacity: 0, duration: 0.4, stagger: 0.1 }, "-=0.3")
+                .from(".form-options", { opacity: 0, duration: 0.4 }, "-=0.2")
+                .from(".login-btn-submit", { y: 20, opacity: 0, duration: 0.4 }, "-=0.2")
+                .from(".signup-prompt, .separator, .social-login", { y: 20, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.1");
+
+            // Password Toggle logic
+            const togglePassword = document.getElementById('toggle-password');
+            const passwordInput = document.getElementById('password-input');
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                 if (type === 'text') {
+                    togglePassword.style.opacity = '0.5';
+                } else {
+                    togglePassword.style.opacity = '1';
+                }
+            });
+
+            // Login Request Logic
+            const loginBtn = document.getElementById('login-btn');
+            const emailInput = document.getElementById('email-input');
+            const pwdInput = document.getElementById('password-input');
+            const loginError = document.getElementById('login-error');
+
+            loginBtn.addEventListener('click', async () => {
+                loginError.textContent = "";
+
+                if(!emailInput.value || !pwdInput.value) {
+                    loginError.textContent = "Please fill in all fields.";
+                    return;
+                }
+
+                try {
+                    loginBtn.textContent = "Verifying...";
+                    loginBtn.disabled = true;
+
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: emailInput.value,
+                            password: pwdInput.value
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if(response.ok) {
+                        // Store user session info for the dashboard
+                        localStorage.setItem('currentUser', JSON.stringify(data.user));
+                        
+                        // Small success feedback before redirect
+                        loginBtn.textContent = "Success! Entering...";
+                        loginBtn.style.backgroundColor = "#4C7D55";
+                        
+                        setTimeout(() => {
+                            window.location.href = "dashboard.html"; 
+                        }, 800);
+                    } else {
+                        let errorMsg = "Invalid email or password";
+                        if (typeof data.detail === 'string') {
+                            errorMsg = data.detail;
+                        } else if (Array.isArray(data.detail)) {
+                            errorMsg = data.detail[0].msg;
+                        }
+                        loginError.textContent = errorMsg;
+                    }
+                } catch (error) {
+                    loginError.textContent = "An error occurred. Please try again.";
+                } finally {
+                    loginBtn.textContent = "Login";
+                    loginBtn.disabled = false;
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard | Annapoorna Connect</title>
+    <link rel="stylesheet" href="css/style.css?v=10">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4C7D55;
+            --secondary: #2e4a34;
+            --accent: #e8a860;
+            --bg-body: #f5f7fa;
+            --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            --sidebar-width: 240px;
+            --top-nav-height: 70px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: #3f4254;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling (Phoenix Inspired) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #fff;
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid #ebedef;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            padding: 0 25px 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-section-title {
+            padding: 10px 25px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #a1a5b7;
+            letter-spacing: 0.05rem;
+        }
+
+        .nav-link {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #5e6278;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #f9f9f9;
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            height: 20px;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 4px 0 0 4px;
+        }
+
+        /* Top Nav */
+        .top-nav {
+            height: var(--top-nav-height);
+            background: #fff;
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            border-bottom: 1px solid #ebedef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 999;
+        }
+
+        .search-container {
+            position: relative;
+            width: 400px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 8px;
+            border: 1px solid #ebedef;
+            background: #f5f8fa;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a1a5b7;
+        }
+
+        /* Main Content Grid */
+        .content-wrapper {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--top-nav-height);
+            padding: 30px;
+            width: calc(100% - var(--sidebar-width));
+            box-sizing: border-box;
+        }
+
+        .dashboard-header {
+            margin-bottom: 25px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+        }
+
+        /* Metrics Grid */
+        .metrics-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .metric-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .metric-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(76, 125, 85, 0.1);
+            color: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .metric-value {
+            display: block;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #a1a5b7;
+        }
+
+        /* Small Cards Styling */
+        .mini-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .badge-trend {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .badge-up { background: #e8fff3; color: #50cd89; }
+
+        /* Table Styling */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .data-table th {
+            text-align: left;
+            font-size: 12px;
+            color: #a1a5b7;
+            text-transform: uppercase;
+            padding: 15px 10px;
+            border-bottom: 1px solid #ebedef;
+        }
+
+        .data-table td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #f9f9f9;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-verified { background: #e8fff3; color: #50cd89; }
+        .status-pending { background: #fff8dd; color: #ffca1f; }
+
+        /* Chart Heights */
+        .chart-container { position: relative; height: 300px; }
+        .pie-container { height: 200px; margin: 0 auto; }
+
+        /* Profile Specific */
+        .profile-input:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px rgba(76, 125, 85, 0.1);
+        }
+
+        /* Donation Specific */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .full-width { grid-column: span 2; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { font-size: 14px; font-weight: 600; color: #444; }
+        .input-group input, .input-group select, .input-group textarea { padding: 14px 18px; border: 1px solid #ebedef; border-radius: 12px; font-size: 15px; outline: none; background: #f8f9fa; transition: all 0.3s; font-family: inherit; }
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(76, 125, 85, 0.1); }
+        .radio-group { display: flex; gap: 15px; margin-top: 5px; }
+        .radio-item { flex: 1; position: relative; }
+        .radio-item input { position: absolute; opacity: 0; cursor: pointer; }
+        .radio-label { display: block; padding: 14px; text-align: center; border: 1px solid #ebedef; border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 500; transition: 0.3s; background: #f8f9fa; }
+        .radio-item input:checked + .radio-label { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(76, 125, 85, 0.2); }
+        .image-upload-box { border: 2px dashed #ebedef; border-radius: 15px; padding: 30px; text-align: center; background: #f8f9fa; cursor: pointer; transition: 0.3s; }
+        .image-upload-box:hover { border-color: var(--primary); background: rgba(76, 125, 85, 0.02); }
+        .submit-btn { margin-top: 20px; width: 100%; padding: 16px; background: var(--primary); color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(76, 125, 85, 0.2); }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(76, 125, 85, 0.3); }
+        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="#" class="sidebar-brand" id="brand-link">
+            <svg width="24" height="24" viewBox="0 0 100 100" fill="none">
+                <path d="M20 70 Q 50 85 70 70 A 10 10 0 0 1 70 80 Q 40 95 10 80 Z" fill="#4C7D55" />
+                <path d="M30 40 Q 50 55 70 40 Z" fill="#e8a860" />
+            </svg>
+            <span style="font-weight: 800; font-size: 20px; color: var(--primary);">annapoorna</span>
+        </a>
+
+        <div class="nav-section-title">Home</div>
+        <a href="#" class="nav-link active" id="nav-overview-btn">
+            <span>📊</span> Impact Overview
+        </a>
+
+        <div class="nav-section-title">Operations</div>
+        <a href="#" class="nav-link" id="nav-donation-btn"><span>🍲</span> Food Donations</a>
+        <a href="fulfillment.html" class="nav-link"><span>🚚</span> Donation Fulfillment</a>
+        <a href="#" class="nav-link"><span>🏠</span> Find Orphanages</a>
+        <a href="#" class="nav-link"><span>🤝</span> Volunteer Network</a>
+        <a href="#" class="nav-link"><span>📈</span> Impact Reports</a>
+
+        <div class="nav-section-title">Community</div>
+        <a href="#" class="nav-link"><span>🌱</span> Success Stories</a>
+        <a href="#" class="nav-link" id="nav-profile-btn"><span>👤</span> My Profile</a>
+    </aside>
+
+    <!-- Top Nav -->
+    <nav class="top-nav">
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Search NGOs, donation history...">
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <span style="cursor: pointer; opacity: 0.6;">🔔</span>
+            <span style="cursor: pointer; opacity: 0.6;" title="Leaderboard">🏆</span>
+            <a href="login.html" onclick="localStorage.removeItem('currentUser');" style="cursor: pointer; opacity: 0.8; transition: 0.2s; display: flex; align-items: center;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)';" onmouseout="this.style.opacity='0.8'; this.style.transform='scale(1)';" title="Logout">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="12" fill="#f1416c" />
+                    <path d="M11 7h3a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-3" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+                    <path d="M14 12H6m0 0l3-3m-3 3l3 3" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </a>
+            <div id="profileTrigger" style="display: flex; gap: 10px; align-items: center; cursor: pointer; padding: 5px 10px; border-radius: 8px; transition: background 0.2s;">
+                <div style="text-align: right;">
+                    <div id="topName" style="font-size: 14px; font-weight: 700;">Jeffy D Martin</div>
+                    <div style="font-size: 11px; color: #a1a5b7;">Active Contributor</div>
+                </div>
+                <div id="topAvatar" style="width: 40px; height: 40px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); border: 1px solid #ebedef;">J</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        
+        <!-- VIEW: OVERVIEW -->
+        <div id="view-overview">
+            <div class="dashboard-header">
+                <h1 style="margin: 0; font-size: 24px; font-weight: 700;">Compassion Dashboard</h1>
+                <p style="margin: 5px 0 0; color: #a1a5b7; font-size: 14px;">Tracking your mission to bridge hunger with hearts.</p>
+            </div>
+
+            <div class="main-grid">
+                <!-- Large Chart Card -->
+                <div class="card">
+                    <div class="metrics-row">
+                        <div class="metric-item">
+                            <div class="metric-icon">🍲</div>
+                            <div>
+                                <span class="metric-value">142 Meals</span>
+                                <span class="metric-label">Served this week</span>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-icon" style="background: rgba(232, 168, 96, 0.1); color: var(--accent);">🏠</div>
+                            <div>
+                                <span class="metric-value">8 Orphanages</span>
+                                <span class="metric-label">Directly supported</span>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-icon" style="background: rgba(241, 65, 108, 0.1); color: #f1416c;">📢</div>
+                            <div>
+                                <span class="metric-value">3 High Alerts</span>
+                                <span class="metric-label">Urgent food needed</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 0 0 20px; font-size: 18px;">Contribution Stats (Monthly)</h3>
+                    <div class="chart-container">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar Stats -->
+                <div style="display: flex; flex-direction: column; gap: 25px;">
+                    <div class="card">
+                        <div class="mini-card">
+                            <div>
+                                <h3 style="margin: 0; font-size: 15px; color: #a1a5b7;">Funds Raised</h3>
+                                <div style="font-size: 24px; font-weight: 800; margin: 10px 0;">₹42,850</div>
+                            </div>
+                            <span class="badge-trend badge-up">+12.5%</span>
+                        </div>
+                        <div style="height: 80px;">
+                            <canvas id="miniChart1"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="mini-card">
+                            <div>
+                                <h3 style="margin: 0; font-size: 15px; color: #a1a5b7;">Active Volunteers</h3>
+                                <div style="font-size: 24px; font-weight: 800; margin: 10px 0;">89</div>
+                            </div>
+                            <span class="badge-trend badge-up">+18.2%</span>
+                        </div>
+                        <div style="height: 80px;">
+                            <canvas id="miniChart2"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-bottom: 20px; font-size: 15px;">Target Allocation</h3>
+                        <div class="pie-container">
+                            <canvas id="targetPie"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Table -->
+                <div class="card" style="grid-column: span 2;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin: 0;">Recent Food Deliveries</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button style="background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">Download Report</button>
+                        </div>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ORPHANAGE / NGO</th>
+                                <th>DONOR</th>
+                                <th>RATING</th>
+                                <th>CONTRIBUTION TYPE</th>
+                                <th>STATUS</th>
+                                <th>EST. ARRIVAL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: PROFILE (Full Page Inspired by Baloot Cloud) -->
+        <div id="view-profile" style="display: none; max-width: 1000px; margin: 0 auto;">
+            <div class="dashboard-header" style="margin-bottom: 40px;">
+                <h1 style="margin: 0; font-size: 24px; font-weight: 700;">Account Settings</h1>
+                <p style="margin: 5px 0 0; color: #a1a5b7; font-size: 14px;">Manage your profile and security preferences.</p>
+            </div>
+
+            <div class="card" style="padding: 40px;">
+                <!-- Avatar Section -->
+                <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
+                    <div style="position: relative;">
+                        <div id="largeAvatar" style="width: 100px; height: 100px; background: #f3f3f3; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 700; color: var(--primary); border: 2px solid #ebedef; overflow: hidden; background-size: cover; background-position: center;">J</div>
+                        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                        <button id="cameraBtn" style="position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; border-radius: 50%; background: white; border: 1px solid #ebedef; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.2s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='white'">📸</button>
+                    </div>
+                    <div style="margin-top: 15px; text-align: center;">
+                        <h3 style="margin: 0; font-size: 18px;" id="profile-full-name">Jeffy D Martin</h3>
+                        <p style="margin: 5px 0 0; font-size: 13px; color: #50cd89; font-weight: 600;">Available for Support</p>
+                    </div>
+                </div>
+
+                <!-- ... (Personal Info, Security & Donations) ... -->
+
+                <!-- Single Column Layout for Personal Information -->
+                <div style="padding-top: 30px; border-top: 1px solid #f3f3f3;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
+                        <div>
+                            <h4 style="margin: 0; font-size: 18px; font-weight: 700;">Personal Information</h4>
+                            <p style="margin: 5px 0 0; font-size: 13px; color: #a1a5b7;">Update your donor account identity details.</p>
+                        </div>
+                        <button id="toggle-edit-btn" style="padding: 10px 20px; background: transparent; color: var(--primary); border: 1.5px solid var(--primary); border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;">✏️ Edit Profile</button>
+                    </div>
+
+                    <div style="max-width: 800px;">
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #3f4254;">Full Name</label>
+                            <input type="text" class="profile-input" id="profile-name-inp" disabled style="width: 100%; padding: 14px; border: 1px solid #ebedef; border-radius: 10px; outline: none; font-size: 14px; background: #f8f9fa;">
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px;">
+                            <div>
+                                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #3f4254;">Gender</label>
+                                <select id="profile-gender-inp" disabled style="width: 100%; padding: 14px; border: 1px solid #ebedef; border-radius: 10px; font-size: 14px; outline: none; background: #f8f9fa;">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #3f4254;">Date of Birth</label>
+                                <input type="date" id="profile-dob-inp" disabled style="width: 100%; padding: 13px; border: 1px solid #ebedef; border-radius: 10px; font-size: 14px; outline: none; background: #f8f9fa;">
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #3f4254;">Profession</label>
+                            <select id="profile-profession-inp" disabled style="width: 100%; padding: 14px; border: 1px solid #ebedef; border-radius: 10px; font-size: 14px; outline: none; background: #f8f9fa;">
+                                <option value="">Select Profession</option>
+                                <option value="Student">Student</option>
+                                <option value="Working Professional">Working Professional</option>
+                                <option value="Business Owner">Business Owner</option>
+                                <option value="Retired">Retired</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #3f4254;">Email Address</label>
+                            <input type="email" class="profile-input" id="profile-email-inp" disabled style="width: 100%; padding: 14px; border: 1px solid #ebedef; border-radius: 10px; outline: none; font-size: 14px; background: #f8f9fa;">
+                        </div>
+                        
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #3f4254;">Mobile Number</label>
+                            <input type="text" class="profile-input" id="profile-phone-inp" disabled style="width: 100%; padding: 14px; border: 1px solid #ebedef; border-radius: 10px; outline: none; font-size: 14px; background: #f8f9fa;">
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #3f4254;">Address</label>
+                            <textarea id="profile-address-inp" disabled style="width: 100%; padding: 14px; border: 1px solid #ebedef; border-radius: 10px; outline: none; font-size: 14px; resize: vertical; min-height: 100px; background: #f8f9fa;" placeholder="Enter your full address"></textarea>
+                        </div>
+
+                        <div id="save-btn-container" style="display: none; justify-content: flex-end; margin-top: 10px;">
+                            <button id="save-profile-btn" style="padding: 14px 40px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(76, 125, 85, 0.3);">Save Profile Changes</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Recent Donations Integration -->
+                <div style="padding-top: 50px; margin-top: 50px; border-top: 1px solid #f3f3f3;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h4 style="margin: 0; font-size: 16px;">Recent Donations Tracking</h4>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; padding: 20px; border-radius: 12px; border: 1px solid #f1f1f1;">
+                            <div>
+                                <div style="font-weight: 700; font-size: 15px;">Rice & Lentils (50kg)</div>
+                                <div style="font-size: 12px; color: #7e8299; margin-top: 4px;">🎯 Holy Hearts Orphanage</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 800; color: var(--primary);">₹2,400</div>
+                                <div style="font-size: 11px; color: #b5b5c3; margin-top: 2px;">OCT 16, 2023</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; padding: 20px; border-radius: 12px; border: 1px solid #f1f1f1;">
+                            <div>
+                                <div style="font-weight: 700; font-size: 15px;">Winter Blanket Kit</div>
+                                <div style="font-size: 12px; color: #7e8299; margin-top: 4px;">🤝 Metro Shelter Home</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 800; color: var(--primary);">₹1,850</div>
+                                <div style="font-size: 11px; color: #b5b5c3; margin-top: 2px;">OCT 10, 2023</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: FOOD DONATION -->
+        <div id="view-donation" style="display: none; max-width: 900px; margin: 0 auto;">
+            <div class="dashboard-header" style="margin-bottom: 40px;">
+                <h1 style="margin: 0; font-size: 24px; font-weight: 700;">Donate Surplus Food</h1>
+                <p style="margin: 5px 0 0; color: #a1a5b7; font-size: 14px;">Help us bridge the gap between plenty and need.</p>
+            </div>
+
+            <div class="card donation-card" style="padding: 40px;">
+                <form id="donationForm">
+                    <div class="form-grid">
+                        <div class="input-group full-width">
+                            <label for="food_name">What are you donating? (e.g. 50 Meals from Wedding)</label>
+                            <input type="text" id="food_name" placeholder="Enter food name or event title" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Food Type</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" name="food_type" value="Veg" id="type-veg" checked><label for="type-veg" class="radio-label">🥗 Veg</label></div>
+                                <div class="radio-item"><input type="radio" name="food_type" value="Non-Veg" id="type-nonveg"><label for="type-nonveg" class="radio-label">🍗 Non-Veg</label></div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="quantity">Quantity (e.g. 20 People, 10kg)</label>
+                            <input type="text" id="quantity" placeholder="Approx quantity" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="expiry_time">When will it expire?</label>
+                            <input type="datetime-local" id="expiry_time" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="category">Category</label>
+                            <select id="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Cooked Meals">Cooked Meals</option>
+                                <option value="Raw Ingredients">Raw Ingredients</option>
+                                <option value="Packaged Foods">Packaged Foods</option>
+                                <option value="Bakery Items">Bakery Items</option>
+                                <option value="Fruits & Veggies">Fruits & Veggies</option>
+                            </select>
+                        </div>
+                        <div class="input-group full-width">
+                            <label for="pickup_address">Pickup Address</label>
+                            <textarea id="pickup_address" placeholder="Enter exact pickup location" required></textarea>
+                        </div>
+                        <div class="input-group full-width">
+                            <label>Add a Photo (Optional)</label>
+                            <div class="image-upload-box" id="upload-trigger-food">
+                                <span style="font-size: 30px; display: block; margin-bottom: 10px;">📸</span>
+                                <span style="font-size: 14px; font-weight: 600; color: #666;">Click to upload food photo</span>
+                                <input type="file" id="food_image" accept="image/*" style="display: none;">
+                            </div>
+                            <div id="image-preview-food" style="display: none; margin-top: 15px; position: relative;">
+                                <img src="" alt="Preview" style="max-width: 100%; border-radius: 12px;">
+                                <button type="button" id="remove-img-food" style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); border: none; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700;">Remove</button>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="contact_name">Your Name</label>
+                            <input type="text" id="contact_name" placeholder="Contact person name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="contact_phone">Contact Phone</label>
+                            <input type="tel" id="contact_phone" placeholder="10-digit mobile number" required pattern="[6-9][0-9]{9}">
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtnFood">Post Donation Now</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let user = JSON.parse(localStorage.getItem('currentUser') || '{"name": "Jeffy D Martin"}');
+            
+            // Sync Session Data to UI
+            function syncUI() {
+                const updatedUser = JSON.parse(localStorage.getItem('currentUser') || '{"name": "Jeffy D Martin"}');
+                
+                // Top Nav
+                document.getElementById('topName').textContent = updatedUser.name;
+                const topAvatar = document.getElementById('topAvatar');
+                if (updatedUser.profile_image) {
+                    topAvatar.textContent = '';
+                    topAvatar.style.backgroundImage = `url(${updatedUser.profile_image})`;
+                    topAvatar.style.backgroundSize = 'cover';
+                    topAvatar.style.backgroundPosition = 'center';
+                } else {
+                    topAvatar.textContent = updatedUser.name.charAt(0).toUpperCase();
+                    topAvatar.style.backgroundImage = 'none';
+                }
+                
+                // Profile Page
+                const lgAvatar = document.getElementById('largeAvatar');
+                if (updatedUser.profile_image) {
+                    lgAvatar.textContent = '';
+                    lgAvatar.style.backgroundImage = `url(${updatedUser.profile_image})`;
+                } else {
+                    lgAvatar.textContent = updatedUser.name.charAt(0).toUpperCase();
+                    lgAvatar.style.backgroundImage = 'none';
+                }
+
+                document.getElementById('profile-full-name').textContent = updatedUser.name;
+                document.getElementById('profile-name-inp').value = updatedUser.name;
+                document.getElementById('profile-email-inp').value = updatedUser.email || "";
+                document.getElementById('profile-phone-inp').value = updatedUser.phone || "";
+                
+                // New Fields Sync
+                if(document.getElementById('profile-gender-inp')) document.getElementById('profile-gender-inp').value = updatedUser.gender || "";
+                if(document.getElementById('profile-dob-inp')) document.getElementById('profile-dob-inp').value = updatedUser.dob || "";
+                if(document.getElementById('profile-profession-inp')) document.getElementById('profile-profession-inp').value = updatedUser.profession || "";
+                if(document.getElementById('profile-address-inp')) document.getElementById('profile-address-inp').value = updatedUser.address || "";
+            }
+            syncUI();
+
+            // Image Upload Handling
+            const cameraBtn = document.getElementById('cameraBtn');
+            const imageUpload = document.getElementById('imageUpload');
+
+            cameraBtn.addEventListener('click', () => imageUpload.click());
+
+            imageUpload.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = async function(e) {
+                        const base64 = e.target.result;
+                        
+                        // Show immediate preview
+                        document.getElementById('largeAvatar').style.backgroundImage = `url(${base64})`;
+                        document.getElementById('largeAvatar').textContent = '';
+                        
+                        // AUTO-SAVE to Database
+                        const updatedData = {
+                            id: user.id || 0,
+                            name: document.getElementById('profile-name-inp').value,
+                            email: document.getElementById('profile-email-inp').value,
+                            phone: document.getElementById('profile-phone-inp').value,
+                            gender: document.getElementById('profile-gender-inp').value,
+                            dob: document.getElementById('profile-dob-inp').value,
+                            profession: document.getElementById('profile-profession-inp').value,
+                            address: document.getElementById('profile-address-inp').value,
+                            profile_image: base64
+                        };
+
+                        try {
+                            const response = await fetch('/api/update-profile', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(updatedData)
+                            });
+
+                            if (response.ok) {
+                                // Update Local and Sync UI
+                                user.profile_image = base64;
+                                localStorage.setItem('currentUser', JSON.stringify({ ...user, ...updatedData }));
+                                syncUI();
+                                console.log("Profile image auto-saved successfully");
+                            }
+                        } catch (error) {
+                            console.error('Auto-save Error:', error);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Toggle Edit Mode Logic
+            const toggleEditBtn = document.getElementById('toggle-edit-btn');
+            const saveBtnContainer = document.getElementById('save-btn-container');
+            const profileInputs = [
+                'profile-name-inp', 'profile-gender-inp', 'profile-dob-inp',
+                'profile-profession-inp', 'profile-email-inp', 'profile-phone-inp',
+                'profile-address-inp'
+            ];
+            let isEditMode = false;
+
+            toggleEditBtn.addEventListener('click', () => {
+                isEditMode = !isEditMode;
+                
+                // Toggle Inputs
+                profileInputs.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.disabled = !isEditMode;
+                        el.style.background = isEditMode ? "#fff" : "#f8f9fa";
+                        el.style.border = isEditMode ? "1px solid var(--primary)" : "1px solid #ebedef";
+                    }
+                });
+
+                // Toggle Buttons
+                saveBtnContainer.style.display = isEditMode ? 'flex' : 'none';
+                toggleEditBtn.innerHTML = isEditMode ? '✖ Cancel Edit' : '✏️ Edit Profile';
+                toggleEditBtn.style.color = isEditMode ? '#f1416c' : 'var(--primary)';
+                toggleEditBtn.style.borderColor = isEditMode ? '#f1416c' : 'var(--primary)';
+            });
+
+            // Mobile Number Real-time Filter (Indian Standard: 10 digits, starts with 6-9)
+            const phoneField = document.getElementById('profile-phone-inp');
+            phoneField.addEventListener('input', function(e) {
+                // Allow only numbers
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Limit to 10 characters
+                if (this.value.length > 10) {
+                    this.value = this.value.slice(0, 10);
+                }
+
+                // Visual feedback while typing
+                if (this.value.length > 0 && !/^[6-9]/.test(this.value)) {
+                    this.parentElement.style.color = "#f1416c";
+                    this.style.borderColor = "#f1416c";
+                } else {
+                    this.parentElement.style.color = "";
+                    this.style.borderColor = "";
+                }
+            });
+
+            // Save Profile Integration
+            const saveBtn = document.getElementById('save-profile-btn');
+            saveBtn.addEventListener('click', async () => {
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = 'Saving...';
+                saveBtn.disabled = true;
+
+                const phoneInp = document.getElementById('profile-phone-inp');
+                const phoneValue = phoneInp.value.trim();
+                const indianPhoneRegex = /^[6-9]\d{9}$/;
+
+                if (!indianPhoneRegex.test(phoneValue)) {
+                    alert("Please enter a valid 10-digit Indian mobile number (starting with 6, 7, 8, or 9).");
+                    phoneInp.style.borderColor = "#f1416c";
+                    saveBtn.textContent = originalText;
+                    saveBtn.disabled = false;
+                    return;
+                }
+                phoneInp.style.borderColor = "#ebedef";
+
+                const updatedData = {
+                    id: parseInt(user.id) || 0,
+                    name: document.getElementById('profile-name-inp').value,
+                    email: document.getElementById('profile-email-inp').value,
+                    phone: document.getElementById('profile-phone-inp').value,
+                    gender: document.getElementById('profile-gender-inp').value,
+                    dob: document.getElementById('profile-dob-inp').value,
+                    profession: document.getElementById('profile-profession-inp').value,
+                    address: document.getElementById('profile-address-inp').value,
+                    profile_image: user.profile_image || null
+                };
+
+                console.log("Sending Profile Update:", updatedData);
+
+                try {
+                    const response = await fetch('/api/update-profile', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updatedData)
+                    });
+
+                    const result = await response.json();
+                    console.log("Profile Update Response:", result);
+
+                    if (response.ok) {
+                        localStorage.setItem('currentUser', JSON.stringify({ ...user, ...updatedData }));
+                        user = JSON.parse(localStorage.getItem('currentUser'));
+                        syncUI();
+
+                        saveBtn.textContent = '✓ Updated';
+                        saveBtn.style.background = '#50cd89';
+                        setTimeout(() => {
+                            saveBtn.textContent = originalText;
+                            saveBtn.style.background = 'var(--primary)';
+                            saveBtn.disabled = false;
+                            
+                            // Return to View Mode
+                            toggleEditBtn.click();
+                        }, 1500);
+                    } else {
+                        let errorMsg = 'Update failed';
+                        if (typeof result.detail === 'string') {
+                            errorMsg = result.detail;
+                        } else if (Array.isArray(result.detail)) {
+                            errorMsg = result.detail[0].msg;
+                        } else if (result.message) {
+                            errorMsg = result.message;
+                        }
+                        alert(errorMsg);
+                        saveBtn.textContent = originalText;
+                        saveBtn.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Update Error:', error);
+                    alert('Server error while updating profile');
+                    saveBtn.textContent = originalText;
+                    saveBtn.disabled = false;
+                }
+            });
+
+            // View Switching Logic
+            const overviewView = document.getElementById('view-overview');
+            const profileView = document.getElementById('view-profile');
+            const donationView = document.getElementById('view-donation');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const profileBtn = document.getElementById('nav-profile-btn');
+            const overviewBtn = document.getElementById('nav-overview-btn');
+            const donationBtn = document.getElementById('nav-donation-btn');
+            const brandLink = document.getElementById('brand-link');
+            const topTrigger = document.getElementById('profileTrigger');
+
+            function switchView(viewId) {
+                overviewView.style.display = 'none';
+                profileView.style.display = 'none';
+                donationView.style.display = 'none';
+                navLinks.forEach(l => l.classList.remove('active'));
+
+                const target = document.getElementById(viewId);
+                target.style.display = 'block';
+                
+                if(viewId === 'view-profile') {
+                    profileBtn.classList.add('active');
+                } else if (viewId === 'view-donation') {
+                    donationBtn.classList.add('active');
+                    // Pre-fill user data when switching to donation view
+                    if (user.name) document.getElementById('contact_name').value = user.name;
+                    if (user.phone) document.getElementById('contact_phone').value = user.phone;
+                    if (user.address) document.getElementById('pickup_address').value = user.address;
+                } else {
+                    overviewBtn.classList.add('active');
+                }
+
+                gsap.from(target, { opacity: 0, y: 10, duration: 0.4, ease: "power2.out" });
+            }
+
+            profileBtn.addEventListener('click', (e) => { e.preventDefault(); switchView('view-profile'); });
+            overviewBtn.addEventListener('click', (e) => { e.preventDefault(); switchView('view-overview'); });
+            donationBtn.addEventListener('click', (e) => { e.preventDefault(); switchView('view-donation'); });
+            brandLink.addEventListener('click', (e) => { e.preventDefault(); switchView('view-overview'); });
+            topTrigger.addEventListener('click', () => switchView('view-profile'));
+
+            // Initial view check for external links
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('tab') === 'profile') {
+                switchView('view-profile');
+            } else if(urlParams.get('tab') === 'donation') {
+                switchView('view-donation');
+            }
+
+            // Donation Image Upload
+            const uploadTriggerFood = document.getElementById('upload-trigger-food');
+            const fileInputFood = document.getElementById('food_image');
+            const previewContainerFood = document.getElementById('image-preview-food');
+            const previewImgFood = previewContainerFood.querySelector('img');
+            const removeImgBtnFood = document.getElementById('remove-img-food');
+
+            uploadTriggerFood.addEventListener('click', () => fileInputFood.click());
+            
+            fileInputFood.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        previewImgFood.src = e.target.result;
+                        previewContainerFood.style.display = 'block';
+                        uploadTriggerFood.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            removeImgBtnFood.addEventListener('click', () => {
+                fileInputFood.value = '';
+                previewContainerFood.style.display = 'none';
+                uploadTriggerFood.style.display = 'block';
+                previewImgFood.src = '';
+            });
+
+            // Donation Form Submit
+            document.getElementById('donationForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtnFood = document.getElementById('submitBtnFood');
+                submitBtnFood.disabled = true;
+                submitBtnFood.textContent = 'Posting Donation...';
+
+                try {
+                    const donationData = {
+                        user_id: parseInt(user.id) || 0,
+                        food_name: document.getElementById('food_name').value,
+                        food_type: document.querySelector('input[name="food_type"]:checked')?.value || 'Veg',
+                        quantity: document.getElementById('quantity').value,
+                        expiry_time: document.getElementById('expiry_time').value,
+                        category: document.getElementById('category').value,
+                        pickup_address: document.getElementById('pickup_address').value,
+                        contact_name: document.getElementById('contact_name').value,
+                        contact_phone: document.getElementById('contact_phone').value,
+                        food_image: previewImgFood.src && previewImgFood.src.startsWith('data:') ? previewImgFood.src : null
+                    };
+
+                    const response = await fetch('/api/donate-food', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(donationData)
+                    });
+
+                    if(response.ok) {
+                        gsap.to('.donation-card', { 
+                            opacity: 0, 
+                            y: -50, 
+                            duration: 0.5, 
+                            onComplete: () => {
+                                document.querySelector('.donation-card').innerHTML = `
+                                    <div style="text-align: center; padding: 40px;">
+                                        <div style="font-size: 60px; margin-bottom: 20px;">✅</div>
+                                        <h2 style="color: var(--primary); margin-bottom: 15px;">Food Posted Successfully!</h2>
+                                        <p style="color: #666; margin-bottom: 30px;">Thank you for your generosity. Nearby orphanages will be notified immediately.</p>
+                                        <button onclick="window.location.reload()" class="submit-btn" style="max-width:200px; margin: 0 auto;">Post Another</button>
+                                    </div>
+                                `;
+                                gsap.from('.donation-card', { opacity: 0, y: 50, duration: 0.5 });
+                            }
+                        });
+                    } else {
+                        const result = await response.json();
+                        alert(result.detail || 'Failed to post donation');
+                        submitBtnFood.disabled = false;
+                        submitBtnFood.textContent = 'Post Donation Now';
+                    }
+                } catch(error) {
+                    console.error('Donation Error:', error);
+                    alert('Server error! Please try again.');
+                    submitBtnFood.disabled = false;
+                    submitBtnFood.textContent = 'Post Donation Now';
+                }
+            });
+
+            // Chart Rendering
+            const ctxMain = document.getElementById('mainChart').getContext('2d');
+            new Chart(ctxMain, {
+                type: 'line',
+                data: {
+                    labels: ['01 May', '05 May', '10 May', '15 May', '20 May', '25 May', '30 May'],
+                    datasets: [{
+                        label: 'Dry Grocery (kg)',
+                        data: [120, 150, 110, 240, 180, 190, 220],
+                        borderColor: '#4C7D55',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(76, 125, 85, 0.05)'
+                    }, {
+                        label: 'Fresh Produce (kg)',
+                        data: [80, 95, 75, 120, 100, 110, 130],
+                        borderColor: '#e8a860',
+                        tension: 0.4,
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: { maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+
+            // Mini Charts & Pie
+            const miniCtx1 = document.getElementById('miniChart1').getContext('2d');
+            new Chart(miniCtx1, {
+                type: 'bar',
+                data: { labels: [...Array(10)], datasets: [{ data: [15, 28, 14, 39, 27, 40, 26, 38, 51, 47], backgroundColor: '#e8a860' }] },
+                options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+            });
+
+            new Chart(document.getElementById('targetPie').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Rural Orphanages', 'Metro Food Banks', 'Shelter Homes'],
+                    datasets: [{ data: [55, 25, 20], backgroundColor: ['#4C7D55', '#e8a860', '#f1416c'] }]
+                },
+                options: { maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } } }
+            });
+
+            // Table Body Render
+            const deliveries = [
+                { target: "Holy Hearts Orphanage", donor: "Aarav Sharma", rating: "★★★★★", type: "Grain Kit (25kg)", status: "DELIVERED", time: "Arrived" },
+                { target: "Unity Shelter Home", donor: "Priya Patel", rating: "★★★★", type: "Fresh Veggies (10kg)", status: "ON WAY", time: "15m left" },
+                { target: "LightHouse School", donor: "Jeffy D Martin", rating: "★★★★★", type: "Milk & Protein", status: "VERIFIED", time: "45m left" }
+            ];
+
+            const tbody = document.getElementById('tableBody');
+            deliveries.forEach(d => {
+                const row = `<tr>
+                    <td><div style="font-weight: 600;">${d.target}</div></td>
+                    <td><div style="display: flex; align-items: center; gap: 8px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: #eee; font-size: 10px; display: flex; align-items: center; justify-content: center;">${d.donor[0]}</div> ${d.donor}</div></td>
+                    <td style="color: #ffca1f;">${d.rating}</td>
+                    <td><div style="color: #5e6278; font-weight: 500;">${d.type}</div></td>
+                    <td><span class="status-badge ${d.status === 'DELIVERED' ? 'status-verified' : 'status-pending'}">${d.status}</span></td>
+                    <td style="color: #a1a5b7;">${d.time}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        });
+    </script>
+</body>
+</html>

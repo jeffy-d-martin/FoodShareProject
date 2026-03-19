@@ -1,0 +1,401 @@
+/* Global Styles */
+:root {
+    --bg-color: #FAF8F2;
+    --dark-green: #113824;
+    --primary-green: #4E8056;
+    --secondary-orange: #E19B53;
+    --text-dark: #1A1A1A;
+    --text-muted: #666666;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* Preloader */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+    overflow: hidden;
+}
+
+.preloader-logo {
+    width: 250px;
+    height: auto;
+    opacity: 0;
+    transform: scale(0.5) rotateY(90deg);
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.container-sm {
+    max-width: 1000px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--bg-color);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 15px;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary-green);
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--dark-green);
+}
+
+.nav-links .login-btn {
+    margin-left: 20px;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    height: 550px;
+    background-color: var(--dark-green);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 65%;
+    height: 100%;
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    z-index: 1;
+}
+
+.hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(17, 56, 36, 0) 0%, rgba(17, 56, 36, 0.3) 100%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.hero-text {
+    max-width: 600px;
+    color: white;
+}
+
+.hero-text h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 40px;
+    max-width: 500px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: #4C7D55;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-orange);
+    color: white;
+}
+
+/* How It Works */
+.how-it-works {
+    padding: 80px 0 60px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 50px;
+    color: var(--text-dark);
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.step-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step-icon {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.step-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.step-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    max-width: 260px;
+    line-height: 1.5;
+}
+
+/* Dashboard Preview / Bottom Section */
+.dashboard-preview {
+    padding: 40px 0 80px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
+/* Impact Panel */
+.impact-panel {
+    background-color: var(--dark-green);
+    border-radius: 12px;
+    padding: 40px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.impact-panel h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.impact-stats {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.stat-item {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--secondary-orange);
+    margin-bottom: 10px;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 120px;
+    margin: 0 auto;
+}
+
+/* Recent Panel */
+.recent-panel {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.recent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.recent-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--text-dark);
+}
+
+.donation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.donation-item {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.donation-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #eee;
+}
+
+.donation-info {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+
+.donation-title {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.donation-status {
+    color: var(--text-muted);
+}
+
+.donation-status.claimed {
+    color: var(--text-dark);
+}
+
+.donation-status.available {
+    color: var(--primary-green);
+    font-weight: 500;
+}
+
+.donation-time {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-text h1 {
+        font-size: 36px;
+    }
+}

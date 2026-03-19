@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annapoorna Connect | Sign Up</title>
+    <link rel="stylesheet" href="css/style.css?v=9">
+    <link rel="stylesheet" href="css/login.css?v=9">
+    <link rel="stylesheet" href="css/signup.css?v=9">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Success Animation Styles -->
+    <style>
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+        }
+        .success-card {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.8);
+        }
+        .success-icon-wrap {
+            width: 80px;
+            height: 80px;
+            background: #4C7D55;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 20px rgba(76, 125, 85, 0.3);
+        }
+        .success-title {
+            color: #1a1a1a;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .success-text {
+            color: #666;
+            margin-bottom: 25px;
+        }
+        .loading-bar {
+            width: 100%;
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        .loading-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: #4C7D55;
+        }
+    </style>
+</head>
+
+<body class="login-page">
+    <!-- Success Modal -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-card" id="successCard">
+            <div class="success-icon-wrap">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2 class="success-title">Account Created!</h2>
+            <p class="success-text">Welcome to the family. Joining hearts, bridging hunger.</p>
+            <div class="loading-bar">
+                <div class="loading-progress" id="redirectProgress"></div>
+            </div>
+            <p style="font-size: 12px; color: #999; margin-top: 10px;">Redirecting to Login...</p>
+        </div>
+    </div>
+
+    <div class="split-container">
+
+        <!-- Left Side: Sign Up Form -->
+        <div class="login-side">
+            <!-- Go back link -->
+            <a href="index.html" class="back-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Back to Home
+            </a>
+
+            <div class="login-wrapper">
+                <div class="login-header">
+                    <h2 class="login-title">Annapoorna Connect <span class="divider-pipe">|</span> Sign Up</h2>
+                </div>
+
+                <!-- Steps Indicator -->
+                <div class="signup-steps-indicator">
+                    <div class="step-dot active" id="dot1">1</div>
+                    <div class="step-line"></div>
+                    <div class="step-dot" id="dot2">2</div>
+                </div>
+
+                <form class="login-form" id="signupForm" onsubmit="event.preventDefault();">
+                    
+                    <!-- Step 1: Basic Details -->
+                    <div class="form-step active-step" id="step1">
+                        <div class="input-group">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <input type="text" placeholder="Full Name" required id="fullName">
+                        </div>
+
+                        <div class="input-group">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7"
+                                        stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <rect x="3" y="5" width="18" height="14" rx="2" stroke="#888" stroke-width="2"
+                                        stroke-linecap="round" />
+                                </svg>
+                            </span>
+                            <input type="email" placeholder="Email Address" required id="emailAddr">
+                        </div>
+
+                        <div class="input-group">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="5" y="11" width="14" height="10" rx="2" stroke="#888" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="#888"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <input type="password" placeholder="Password" required id="pwdInput" minlength="8">
+                            <span class="icon-right toggle-password" data-target="pwdInput">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0112 20C7.03 20 3 15.5 3 12c0-1.63.47-3.15 1.27-4.44M9.9 4.24A9.12 9.12 0 0112 4c4.97 0 9 4.5 9 8 0 1.25-.33 2.42-.88 3.44M15 12a3 3 0 01-3 3 3 3 0 01-2.12-.88M3 3l18 18"
+                                        stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                        </div>
+
+                        <div class="input-group">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="5" y="11" width="14" height="10" rx="2" stroke="#888" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="#888"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <input type="password" placeholder="Retype Password" required id="pwdConfirm" minlength="8">
+                            <span class="icon-right toggle-password" data-target="pwdConfirm">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0112 20C7.03 20 3 15.5 3 12c0-1.63.47-3.15 1.27-4.44M9.9 4.24A9.12 9.12 0 0112 4c4.97 0 9 4.5 9 8 0 1.25-.33 2.42-.88 3.44M15 12a3 3 0 01-3 3 3 3 0 01-2.12-.88M3 3l18 18"
+                                        stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                        </div>
+
+                        <div class="error-msg" id="step1Error"></div>
+
+                        <button type="button" class="login-btn-submit" id="nextToOtpBtn">Next Step: Verification</button>
+
+                        <div class="separator">
+                            <span>Or sign up with</span>
+                        </div>
+
+                        <div class="social-login">
+                            <button type="button" class="btn google">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                        fill="#4285F4" />
+                                    <path
+                                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                        fill="#34A853" />
+                                    <path
+                                        d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.84z"
+                                        fill="#FBBC05" />
+                                    <path
+                                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                                        fill="#EA4335" />
+                                </svg>
+                                Google
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: OTP Verification -->
+                    <div class="form-step" id="step2">
+                        <div class="input-group">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="phone-prefix">+91</span>
+                            <input type="tel" placeholder="Mobile Number" required id="phoneInput" 
+                                pattern="[6-9][0-9]{9}" maxlength="10">
+                            <button type="button" class="btn-otp-action" id="sendOtpBtn">Send OTP</button>
+                        </div>
+
+                        <div class="input-group disabled-group" id="otpGroup">
+                            <span class="icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 17L12 22L22 17" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 12L12 17L22 12" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <input type="text" placeholder="Enter OTP" required id="otpInput" disabled>
+                        </div>
+
+                        <div class="success-msg" id="otpSuccess" style="display: none;">OTP sent to your phone! (Hint: use 1234)</div>
+                        <div class="error-msg" id="step2Error"></div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" class="login-btn-submit" style="background-color: #999; flex: 1;" id="backToStep1Btn">Back</button>
+                            <button type="button" class="login-btn-submit" style="flex: 2;" id="registerBtn" disabled>Complete Sign Up</button>
+                        </div>
+                    </div>
+
+                    <p class="signup-prompt">Already have an account? <a href="login.html">Login</a></p>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Side: Background Photo Overlay -->
+        <div class="image-side">
+            <div class="img-bg"></div>
+
+            <div class="image-top-logo">
+                <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="white-logo">
+                    <path d="M20 70 Q 50 85 70 70 A 10 10 0 0 1 70 80 Q 40 95 10 80 Z" fill="#fff" />
+                    <path d="M30 65 Q 50 75 60 65" stroke="#fff" stroke-width="4" fill="none" />
+                    <path d="M30 40 Q 50 55 70 40 Z" fill="#e8a860" />
+                    <circle cx="50" cy="35" r="5" fill="#e8a860" />
+                    <path d="M75 50 Q 90 40 85 20 A 15 15 0 0 0 65 25 Q 70 45 75 50 Z" fill="#fff" />
+                </svg>
+                <span>ANNAPOORNA CONNECT | BRIDGING HUNGER WITH COMPASSION</span>
+            </div>
+
+            <div class="image-center-text">
+                <h2>Join our mission to connect food with hearts.<br>Register today.</h2>
+            </div>
+
+            <div class="image-bottom-links">
+                <p>© 2026 Annapoorna Connect | A Global Compassion Initiative</p>
+                <div class="footer-links">
+                    <a href="#">ABOUT US</a> |
+                    <a href="#">IMPACT STORIES</a> |
+                    <a href="#">CONTACT</a> |
+                    <a href="#">LEGAL</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP and Confetti for premium animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+            // Fade in right side image and text
+            tl.from(".img-bg", { opacity: 0, duration: 1.2 })
+                .from(".image-center-text h2", { y: -30, opacity: 0, duration: 0.8 }, "-=0.6")
+                .from(".image-top-logo", { y: -20, opacity: 0, duration: 0.6 }, "-=0.4")
+                .from(".image-bottom-links", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4");
+
+            // Slide in left form elements
+            tl.from(".login-side", { x: -50, opacity: 0, duration: 0.8 }, "-=1.0")
+                .from(".login-title", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4")
+                .from(".signup-steps-indicator", { y: 20, opacity: 0, duration: 0.4 }, "-=0.2")
+                .from("#step1 > *", { y: 20, opacity: 0, duration: 0.4, stagger: 0.1 }, "-=0.3")
+                .from(".signup-prompt", { y: 20, opacity: 0, duration: 0.5 }, "-=0.1");
+
+
+            // Form Logic
+            const nextBtn = document.getElementById('nextToOtpBtn');
+            const backBtn = document.getElementById('backToStep1Btn');
+            const sendOtpBtn = document.getElementById('sendOtpBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const dot1 = document.getElementById('dot1');
+            const dot2 = document.getElementById('dot2');
+
+            // Inputs
+            const fullName = document.getElementById('fullName');
+            const emailAddr = document.getElementById('emailAddr');
+            const pwdInput = document.getElementById('pwdInput');
+            const pwdConfirm = document.getElementById('pwdConfirm');
+            const phoneInput = document.getElementById('phoneInput');
+            const otpInput = document.getElementById('otpInput');
+            const otpGroup = document.getElementById('otpGroup');
+
+            // Messaging
+            const step1Error = document.getElementById('step1Error');
+            const otpSuccess = document.getElementById('otpSuccess');
+            const step2Error = document.getElementById('step2Error');
+
+            // Enforce 10-digit limit and only numbers
+            phoneInput.addEventListener('input', (e) => {
+                // Remove non-numeric characters
+                let value = e.target.value.replace(/\D/g, '');
+                
+                // Ensure first digit is 6, 7, 8, or 9
+                if (value.length > 0 && !/[6-9]/.test(value[0])) {
+                    value = '';
+                    step2Error.textContent = "Indian mobile numbers must start with 6, 7, 8, or 9.";
+                } else {
+                    step2Error.textContent = "";
+                }
+
+                // Limit to 10 digits
+                if (value.length > 10) {
+                    value = value.substring(0, 10);
+                }
+                e.target.value = value;
+            });
+
+            // Move to Step 2
+            nextBtn.addEventListener('click', () => {
+                step1Error.textContent = "";
+                
+                if(!fullName.value || !emailAddr.value || !pwdInput.value || !pwdConfirm.value) {
+                    step1Error.textContent = "Please fill out all fields.";
+                    return;
+                }
+                
+                // Email format validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if(!emailRegex.test(emailAddr.value)) {
+                    step1Error.textContent = "Please enter a valid email address.";
+                    return;
+                }
+
+                // Password length validation
+                if(pwdInput.value.length < 8) {
+                    step1Error.textContent = "Password must be at least 8 characters long.";
+                    return;
+                }
+
+                if(pwdInput.value !== pwdConfirm.value) {
+                    step1Error.textContent = "Passwords do not match.";
+                    return;
+                }
+
+                // Transition
+                step1.classList.remove('active-step');
+                step2.classList.add('active-step');
+                dot1.classList.remove('active');
+                dot2.classList.add('active');
+            });
+
+            // Back to Step 1
+            backBtn.addEventListener('click', () => {
+                step2.classList.remove('active-step');
+                step1.classList.add('active-step');
+                dot2.classList.remove('active');
+                dot1.classList.add('active');
+            });
+
+            // Send OTP
+            sendOtpBtn.addEventListener('click', () => {
+                step2Error.textContent = "";
+                const phoneValue = phoneInput.value.trim();
+                const phoneRegex = /^[6-9]\d{9}$/;
+                
+                if(!phoneValue || !phoneRegex.test(phoneValue)) {
+                    step2Error.textContent = "Please enter a valid 10-digit Indian mobile number (e.g., 9876543210).";
+                    return;
+                }
+                
+                // Simulate OTP sending
+                sendOtpBtn.textContent = "Resend";
+                otpSuccess.style.display = "block";
+                
+                // Enable OTP input
+                otpGroup.classList.remove('disabled-group');
+                otpInput.disabled = false;
+                registerBtn.disabled = false;
+            });
+
+            // Register Submit
+            registerBtn.addEventListener('click', async () => {
+                step2Error.textContent = "";
+                if(otpInput.value !== "1234") {
+                    step2Error.textContent = "Invalid OTP. Hint: 1234";
+                    return;
+                }
+                
+                // Call FastAPI backend to register
+                try {
+                    registerBtn.textContent = "Creating Account...";
+                    registerBtn.disabled = true;
+
+                    const payload = {
+                        name: fullName.value,
+                        email: emailAddr.value,
+                        password: pwdInput.value,
+                        phone: phoneInput.value
+                    };
+
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await response.json();
+
+                    if(response.ok) {
+                        // Trigger Wow Success Animation
+                        showSuccessAnimation();
+                    } else {
+                        let errorMsg = "Failed to create account.";
+                        if (typeof data.detail === 'string') {
+                            errorMsg = data.detail;
+                        } else if (Array.isArray(data.detail)) {
+                            errorMsg = data.detail[0].msg;
+                        }
+                        step2Error.textContent = errorMsg;
+                    }
+                } catch (error) {
+                    step2Error.textContent = "An error occurred. Please try again later.";
+                } finally {
+                    registerBtn.textContent = "Complete Sign Up";
+                    registerBtn.disabled = false;
+                }
+            });
+
+            // Premium Success Animation Function
+            function showSuccessAnimation() {
+                const overlay = document.getElementById('successOverlay');
+                const card = document.getElementById('successCard');
+                const progress = document.getElementById('redirectProgress');
+
+                overlay.style.display = 'flex';
+                
+                // GSAP Entrance
+                gsap.to(overlay, { opacity: 1, duration: 0.5 });
+                gsap.to(card, { 
+                    scale: 1, 
+                    rotationY: 360, 
+                    duration: 1.2, 
+                    ease: "back.out(1.7)" 
+                });
+
+                // Trigger Confetti
+                const duration = 3 * 1000;
+                const end = Date.now() + duration;
+
+                (function frame() {
+                    confetti({
+                        particleCount: 3,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: ['#4C7D55', '#e8a860', '#ffffff']
+                    });
+                    confetti({
+                        particleCount: 3,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: ['#4C7D55', '#e8a860', '#ffffff']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                }());
+
+                // Progress Bar and Redirect
+                gsap.to(progress, { 
+                    width: '100%', 
+                    duration: 3, 
+                    ease: "none",
+                    onComplete: () => {
+                        window.location.href = "login.html";
+                    }
+                });
+            }
+
+            // Password Toggle Logic
+            const toggles = document.querySelectorAll('.toggle-password');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const targetId = toggle.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    
+                    if (type === 'text') {
+                        toggle.style.opacity = '0.5';
+                    } else {
+                        toggle.style.opacity = '1';
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

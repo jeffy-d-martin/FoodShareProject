@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Fulfillment | Annapoorna Connect</title>
+    <link rel="stylesheet" href="css/style.css?v=11">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        :root {
+            --primary: #4C7D55;
+            --secondary: #2e4a34;
+            --accent: #e8a860;
+            --bg-body: #f5f7fa;
+            --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            --sidebar-width: 240px;
+            --top-nav-height: 70px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: #3f4254;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #fff;
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid #ebedef;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            padding: 0 25px 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-section-title {
+            padding: 10px 25px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #a1a5b7;
+            letter-spacing: 0.05rem;
+        }
+
+        .nav-link {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #5e6278;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #f9f9f9;
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            height: 20px;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 4px 0 0 4px;
+        }
+
+        /* Top Nav */
+        .top-nav {
+            height: var(--top-nav-height);
+            background: #fff;
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            border-bottom: 1px solid #ebedef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 999;
+        }
+
+        .search-container {
+            position: relative;
+            width: 400px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 8px;
+            border: 1px solid #ebedef;
+            background: #f5f8fa;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a1a5b7;
+        }
+
+        .content-wrapper {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--top-nav-height);
+            padding: 30px;
+            width: calc(100% - var(--sidebar-width));
+            box-sizing: border-box;
+        }
+
+        .dashboard-header {
+            margin-bottom: 40px;
+        }
+
+
+        .fulfillment-container {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .fulfillment-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .fulfillment-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .fulfillment-header p {
+            color: #777;
+            font-size: 16px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .fulfillment-card {
+            height: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #777;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="dashboard.html" class="sidebar-brand">
+            <svg width="24" height="24" viewBox="0 0 100 100" fill="none">
+                <path d="M20 70 Q 50 85 70 70 A 10 10 0 0 1 70 80 Q 40 95 10 80 Z" fill="#4C7D55" />
+                <path d="M30 40 Q 50 55 70 40 Z" fill="#e8a860" />
+            </svg>
+            <span style="font-weight: 800; font-size: 20px; color: var(--primary);">annapoorna</span>
+        </a>
+
+        <div class="nav-section-title">Home</div>
+        <a href="dashboard.html" class="nav-link">
+            <span>📊</span> Impact Overview
+        </a>
+
+        <div class="nav-section-title">Operations</div>
+        <a href="dashboard.html?tab=donation" class="nav-link"><span>🍲</span> Food Donations</a>
+        <a href="fulfillment.html" class="nav-link active"><span>🚚</span> Donation Fulfillment</a>
+        <a href="#" class="nav-link"><span>🏠</span> Find Orphanages</a>
+        <a href="#" class="nav-link"><span>🤝</span> Volunteer Network</a>
+        <a href="#" class="nav-link"><span>📈</span> Impact Reports</a>
+
+        <div class="nav-section-title">Community</div>
+        <a href="#" class="nav-link"><span>🌱</span> Success Stories</a>
+        <a href="dashboard.html?tab=profile" class="nav-link"><span>👤</span> My Profile</a>
+    </aside>
+
+    <!-- Top Nav -->
+    <nav class="top-nav">
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Search orders, NGOs...">
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <span style="cursor: pointer; opacity: 0.6;">🔔</span>
+            <span style="cursor: pointer; opacity: 0.6;" title="Leaderboard">🏆</span>
+            <a href="login.html" onclick="localStorage.removeItem('currentUser');" style="cursor: pointer; opacity: 0.8; transition: 0.2s; display: flex; align-items: center;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)';" onmouseout="this.style.opacity='0.8'; this.style.transform='scale(1)';" title="Logout">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="12" fill="#f1416c" />
+                    <path d="M11 7h3a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-3" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+                    <path d="M14 12H6m0 0l3-3m-3 3l3 3" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </a>
+            <a href="dashboard.html?tab=profile" style="display: flex; gap: 10px; align-items: center; cursor: pointer; padding: 5px 10px; border-radius: 8px; text-decoration: none; color: inherit;">
+                <div style="text-align: right;">
+                    <div id="topName" style="font-size: 14px; font-weight: 700;">Jeffy D Martin</div>
+                    <div style="font-size: 11px; color: #a1a5b7;">Active Contributor</div>
+                </div>
+                <div id="topAvatar" style="width: 40px; height: 40px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); border: 1px solid #ebedef;">J</div>
+            </a>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+
+        <div class="dashboard-header" id="fulfillmentHeader">
+            <h1 style="margin: 0; font-size: 24px; font-weight: 700;">Donation Fulfillment</h1>
+            <p style="margin: 5px 0 0; color: #a1a5b7; font-size: 14px;">Manage pending donations and track active deliveries to orphanages.</p>
+        </div>
+
+        <div id="fulfillment-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch;">
+            <!-- Card 1 -->
+            <div class="card fulfillment-card" style="display: flex; flex-direction: column; gap: 15px; height: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 800; font-size: 16px; color: var(--primary);">#ORD-8921</span>
+                    <span class="status-badge" style="background: #fff8dd; color: #ffca1f; font-size: 10px;">PENDING PICKUP</span>
+                </div>
+                <div>
+                    <h4 style="margin: 0; font-size: 18px; color: #3f4254;">50 Meals (Veg)</h4>
+                    <span style="font-size: 12px; color: #a1a5b7;">Cooked Meals</span>
+                </div>
+                <div style="border-top: 1px dashed #ebedef; margin: 10px 0;"></div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="opacity: 0.6;">👤</span> <b>Aarav Sharma</b>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px;">
+                        <span style="opacity: 0.6;">📍</span> <span style="color: #7e8299;">123 NGO Street, City Center</span>
+                    </div>
+                </div>
+                <button style="margin-top: auto; padding: 12px; width: 100%; border-radius: 8px; background: var(--primary); color: white; border: none; font-weight: 700; cursor: pointer; transition: 0.2s;" onmouseover="this.style.boxShadow='0 5px 15px rgba(76,125,85,0.2)'" onmouseout="this.style.boxShadow='none'">Accept Request</button>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card fulfillment-card" style="display: flex; flex-direction: column; gap: 15px; height: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 800; font-size: 16px; color: var(--primary);">#ORD-8922</span>
+                    <span class="status-badge" style="background: #e8fff3; color: #50cd89; font-size: 10px;">IN TRANSIT</span>
+                </div>
+                <div>
+                    <h4 style="margin: 0; font-size: 18px; color: #3f4254;">Fresh Veggies</h4>
+                    <span style="font-size: 12px; color: #a1a5b7;">Fruits & Veggies</span>
+                </div>
+                <div style="border-top: 1px dashed #ebedef; margin: 10px 0;"></div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="opacity: 0.6;">👤</span> <b>Priya Patel</b>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px;">
+                        <span style="opacity: 0.6;">📍</span> <span style="color: #7e8299;">Market Road, Next to Metro</span>
+                    </div>
+                </div>
+                <button style="margin-top: auto; padding: 12px; width: 100%; border-radius: 8px; background: #f8f9fa; color: #3f4254; border: 1px solid #ebedef; font-weight: 700; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='#f1f1f1'" onmouseout="this.style.background='#f8f9fa'">Track Delivery</button>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card fulfillment-card" style="display: flex; flex-direction: column; gap: 15px; height: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 800; font-size: 16px; color: var(--primary);">#ORD-8923</span>
+                    <span class="status-badge" style="background: #fff8dd; color: #ffca1f; font-size: 10px;">PENDING PICKUP</span>
+                </div>
+                <div>
+                    <h4 style="margin: 0; font-size: 18px; color: #3f4254;">Wedding Leftovers</h4>
+                    <span style="font-size: 12px; color: #a1a5b7;">Packaged Foods</span>
+                </div>
+                <div style="border-top: 1px dashed #ebedef; margin: 10px 0;"></div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="opacity: 0.6;">👤</span> <b>Rahul Singh</b>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px;">
+                        <span style="opacity: 0.6;">📍</span> <span style="color: #7e8299;">Grand Palace Hall, West Ring</span>
+                    </div>
+                </div>
+                <button style="margin-top: auto; padding: 12px; width: 100%; border-radius: 8px; background: var(--primary); color: white; border: none; font-weight: 700; cursor: pointer; transition: 0.2s;" onmouseover="this.style.boxShadow='0 5px 15px rgba(76,125,85,0.2)'" onmouseout="this.style.boxShadow='none'">Accept Request</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // AUTH GUARD
+            const sessionData = localStorage.getItem('currentUser');
+            if (!sessionData) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Sync Top Nav Logic
+            const updatedUser = JSON.parse(localStorage.getItem('currentUser') || '{"name": "Jeffy D Martin"}');
+            document.getElementById('topName').textContent = updatedUser.name;
+            const topAvatar = document.getElementById('topAvatar');
+            if (updatedUser.profile_image) {
+                topAvatar.textContent = '';
+                topAvatar.style.backgroundImage = `url(${updatedUser.profile_image})`;
+                topAvatar.style.backgroundSize = 'cover';
+                topAvatar.style.backgroundPosition = 'center';
+            } else {
+                topAvatar.textContent = updatedUser.name.charAt(0).toUpperCase();
+            }
+
+            // Entry Animation
+            gsap.from('.fulfillment-card', { opacity: 0, top: 30, duration: 0.6, stagger: 0.15, ease: "power2.out", clearProps: "top" });
+            gsap.from('#fulfillmentHeader', { opacity: 0, y: -20, duration: 0.6 });
+        });
+    </script>
+</body>
+</html>

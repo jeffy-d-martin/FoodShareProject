@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Surplus Food | Annapoorna Connect</title>
+    <link rel="stylesheet" href="css/style.css?v=11">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        :root {
+            --primary: #4C7D55;
+            --secondary: #2e4a34;
+            --accent: #e8a860;
+            --bg-body: #f5f7fa;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --input-bg: #f8f9fa;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .donation-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .donation-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .donation-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .donation-header p {
+            color: #777;
+            font-size: 16px;
+        }
+
+        .donation-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .input-group input, 
+        .input-group select, 
+        .input-group textarea {
+            padding: 14px 18px;
+            border: 1px solid #ebedef;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            background: var(--input-bg);
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .input-group input:focus, 
+        .input-group select:focus, 
+        .input-group textarea:focus {
+            background: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(76, 125, 85, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .radio-item {
+            flex: 1;
+            position: relative;
+        }
+
+        .radio-item input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .radio-label {
+            display: block;
+            padding: 14px;
+            text-align: center;
+            border: 1px solid #ebedef;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.3s;
+            background: var(--input-bg);
+        }
+
+        .radio-item input:checked + .radio-label {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(76, 125, 85, 0.2);
+        }
+
+        .image-upload-box {
+            border: 2px dashed #ebedef;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            background: var(--input-bg);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .image-upload-box:hover {
+            border-color: var(--primary);
+            background: rgba(76, 125, 85, 0.02);
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(76, 125, 85, 0.2);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(76, 125, 85, 0.3);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #777;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="donation-container">
+        <a href="dashboard.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Back to Dashboard
+        </a>
+
+        <div class="donation-header">
+            <h1 id="page-title">Donate Surplus Food</h1>
+            <p>Help us bridge the gap between plenty and need.</p>
+        </div>
+
+        <div class="donation-card">
+            <form id="donationForm">
+                <div class="form-grid">
+                    <!-- Food Title -->
+                    <div class="input-group full-width">
+                        <label for="food_name">What are you donating? (e.g. 50 Meals from Wedding)</label>
+                        <input type="text" id="food_name" placeholder="Enter food name or event title" required>
+                    </div>
+
+                    <!-- Food Type (Veg / Non-Veg) -->
+                    <div class="input-group">
+                        <label>Food Type</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" name="food_type" value="Veg" id="type-veg" checked>
+                                <label for="type-veg" class="radio-label">🥗 Veg</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" name="food_type" value="Non-Veg" id="type-nonveg">
+                                <label for="type-nonveg" class="radio-label">🍗 Non-Veg</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="input-group">
+                        <label for="quantity">Quantity (e.g. 20 People, 10kg)</label>
+                        <input type="text" id="quantity" placeholder="Approx quantity" required>
+                    </div>
+
+                    <!-- Expiry Date/Time -->
+                    <div class="input-group">
+                        <label for="expiry_time">When will it expire?</label>
+                        <input type="datetime-local" id="expiry_time" required>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="input-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Cooked Meals">Cooked Meals</option>
+                            <option value="Raw Ingredients">Raw Ingredients</option>
+                            <option value="Packaged Foods">Packaged Foods</option>
+                            <option value="Bakery Items">Bakery Items</option>
+                            <option value="Fruits & Veggies">Fruits & Veggies</option>
+                        </select>
+                    </div>
+
+                    <!-- Pickup Location -->
+                    <div class="input-group full-width">
+                        <label for="pickup_address">Pickup Address</label>
+                        <textarea id="pickup_address" placeholder="Enter exact pickup location" required></textarea>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="input-group full-width">
+                        <label>Add a Photo (Optional)</label>
+                        <div class="image-upload-box" id="upload-trigger">
+                            <span style="font-size: 30px; display: block; margin-bottom: 10px;">📸</span>
+                            <span style="font-size: 14px; font-weight: 600; color: #666;">Click to upload food photo</span>
+                            <input type="file" id="food_image" accept="image/*" style="display: none;">
+                        </div>
+                        <div id="image-preview" style="display: none; margin-top: 15px; position: relative;">
+                            <img src="" alt="Preview" style="max-width: 100%; border-radius: 12px;">
+                            <button type="button" id="remove-img" style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); border: none; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700;">Remove</button>
+                        </div>
+                    </div>
+
+                    <!-- Contact Details -->
+                    <div class="input-group">
+                        <label for="contact_name">Your Name</label>
+                        <input type="text" id="contact_name" placeholder="Contact person name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="contact_phone">Contact Phone</label>
+                        <input type="tel" id="contact_phone" placeholder="10-digit mobile number" required pattern="[6-9][0-9]{9}">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Post Donation Now</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // AUTH GUARD: Redirect to login if no session exists
+            const sessionData = localStorage.getItem('currentUser');
+            if (!sessionData) {
+                window.location.href = "login.html";
+                return;
+            }
+            const user = JSON.parse(sessionData);
+            
+            // Pre-fill user data
+            if (user.name) document.getElementById('contact_name').value = user.name;
+            if (user.phone) document.getElementById('contact_phone').value = user.phone;
+            if (user.address) document.getElementById('pickup_address').value = user.address;
+
+            const uploadTrigger = document.getElementById('upload-trigger');
+            const fileInput = document.getElementById('food_image');
+            const previewContainer = document.getElementById('image-preview');
+            const previewImg = previewContainer.querySelector('img');
+            const removeImgBtn = document.getElementById('remove-img');
+
+            uploadTrigger.addEventListener('click', () => fileInput.click());
+
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        previewImg.src = e.target.result;
+                        previewContainer.style.display = 'block';
+                        uploadTrigger.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            removeImgBtn.addEventListener('click', () => {
+                fileInput.value = '';
+                previewContainer.style.display = 'none';
+                uploadTrigger.style.display = 'block';
+            });
+
+            // Handle Form Submission
+            const donationForm = document.getElementById('donationForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            donationForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const formData = {
+                    food_name: document.getElementById('food_name').value,
+                    food_type: document.querySelector('input[name="food_type"]:checked').value,
+                    quantity: document.getElementById('quantity').value,
+                    expiry_time: document.getElementById('expiry_time').value,
+                    category: document.getElementById('category').value,
+                    pickup_address: document.getElementById('pickup_address').value,
+                    contact_name: document.getElementById('contact_name').value,
+                    contact_phone: document.getElementById('contact_phone').value,
+                    image_base64: previewImg.src !== "" ? previewImg.src : null,
+                    donor_id: user.id || 0
+                };
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Posting Donation...';
+
+                // In a real app, you'd fetch /api/donate-food
+                // For now, we'll simulate success and save to local storage for "Recent Donations" update
+                
+                setTimeout(() => {
+                    // Success UI
+                    gsap.to('.donation-card', { 
+                        opacity: 0, 
+                        y: -50, 
+                        duration: 0.5, 
+                        onComplete: () => {
+                            document.querySelector('.donation-card').innerHTML = `
+                                <div style="text-align: center; padding: 40px;">
+                                    <div style="font-size: 60px; margin-bottom: 20px;">✅</div>
+                                    <h2 style="color: var(--primary); margin-bottom: 15px;">Food Posted Successfully!</h2>
+                                    <p style="color: #666; margin-bottom: 30px;">Thank you for your generosity. Nearby orphanages will be notified immediately.</p>
+                                    <button onclick="window.location.href='dashboard.html'" class="submit-btn">Return to Dashboard</button>
+                                </div>
+                            `;
+                            gsap.from('.donation-card', { opacity: 0, y: 50, duration: 0.5 });
+                        }
+                    });
+                }, 1500);
+            });
+
+            // Entry Animation
+            gsap.from('.donation-card', { opacity: 0, y: 30, duration: 0.8, ease: "power2.out" });
+            gsap.from('.donation-header', { opacity: 0, y: -20, duration: 0.8, delay: 0.2 });
+        });
+    </script>
+</body>
+</html>
